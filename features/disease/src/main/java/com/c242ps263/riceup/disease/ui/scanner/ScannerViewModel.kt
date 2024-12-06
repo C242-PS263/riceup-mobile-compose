@@ -4,6 +4,9 @@ import android.content.Context
 import android.net.Uri
 import android.util.Log
 import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContract
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.camera.core.ImageCapture
 import androidx.camera.core.ImageCaptureException
 import androidx.camera.core.Preview
@@ -44,8 +47,6 @@ class ScannerViewModel @Inject constructor(
     val cameraProvider = cameraProviderFuture.get()
 
     fun captureImageFromCamera(context: Context, onMediaCaptured: (Uri) -> Unit) {
-        uiStatePrediction.value = UiState.Loading
-
         val imgCapture = imageCapture ?: return
 
         val photoFile = File(context.filesDir, "${System.currentTimeMillis()}.jpg")
@@ -74,6 +75,8 @@ class ScannerViewModel @Inject constructor(
     }
 
     fun predict(file: File, dispatcher: CoroutineDispatcher = Dispatchers.Default) {
+        uiStatePrediction.value = UiState.Loading
+
         viewModelScope.launch(dispatcher) {
             try {
                 val result = predictDiseaseUseCase?.execute(

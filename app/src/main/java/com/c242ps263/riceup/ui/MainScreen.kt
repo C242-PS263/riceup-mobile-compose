@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -24,10 +25,10 @@ import com.c242ps263.core.theme.RiceUpTheme
 import com.c242ps263.riceup.data.model.Advice
 import com.c242ps263.riceup.disease.data.model.DetectionDisease
 import com.c242ps263.riceup.disease.ui.detection.DetectionScreen
+import com.c242ps263.riceup.disease.ui.history.HistoryScreen
 import com.c242ps263.riceup.disease.ui.home.HomeScreen
 import com.c242ps263.riceup.disease.ui.scanner.ScannerScreen
 import com.c242ps263.riceup.ui.advice.AdviceScreen
-import com.c242ps263.riceup.ui.history.HistoryScreen
 import com.c242ps263.riceup.ui.navigation.BottomBar
 import com.c242ps263.riceup.ui.navigation.model.BottomBarScreen
 import com.c242ps263.riceup.ui.prediction.PredictionScreen
@@ -47,6 +48,10 @@ fun MainScreen(
         BottomBarScreen.Camera,
         BottomBarScreen.History,
     )
+    val allNavTitle =
+        navigationItemList.map { it.route to it.title } + arrayOf(
+            DetectionDisease::class.toString() to "HASIL"
+        )
 
     Scaffold(
         modifier = modifier,
@@ -58,7 +63,9 @@ fun MainScreen(
                     titleContentColor = MaterialTheme.colorScheme.background,
                 ),
                 title = {
-                    Text("RICE UP",
+                    val navTitle =
+                        allNavTitle.firstOrNull { it.first == currentDestination?.route }
+                    Text(navTitle?.second ?: "RICE UP",
                         style = MaterialTheme.typography.titleLarge.copy(
                             fontWeight = FontWeight.Bold
                         )
@@ -104,6 +111,9 @@ fun MainScreen(
                     detectionDisease = it.toRoute(),
                     navigateToAdvice = { text ->
                         navController.navigate(Advice(text))
+                    },
+                    navigateToHistory = {
+                        navController.navigate(BottomBarScreen.History.route)
                     }
                 )
             }

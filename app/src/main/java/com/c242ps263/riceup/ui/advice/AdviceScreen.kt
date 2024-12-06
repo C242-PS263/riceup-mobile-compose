@@ -30,7 +30,7 @@ fun AdviceScreen(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.White)
+            .padding(8.dp)
     ) {
         Column (
             horizontalAlignment = Alignment.CenterHorizontally,

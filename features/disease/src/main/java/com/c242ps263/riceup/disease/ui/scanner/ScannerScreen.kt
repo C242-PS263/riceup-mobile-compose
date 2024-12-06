@@ -1,7 +1,10 @@
 package com.c242ps263.riceup.disease.ui.scanner
 
 import android.Manifest
+import android.net.Uri
 import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageCapture
 import androidx.camera.view.PreviewView
@@ -27,7 +30,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -69,6 +75,14 @@ fun ScannerScreen(
     } else {
         rememberPermissionState(Manifest.permission.CAMERA)
     }
+    var imageUri by remember {
+        mutableStateOf<Uri?>(null)
+    }
+    val galeryLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.GetContent()
+    ) { uri ->
+        imageUri = uri
+    }
 
     LaunchedEffect(true) {
         if (permissionState?.status?.isGranted == false) {
@@ -104,8 +118,9 @@ fun ScannerScreen(
                         }
                     }
                 }
-//                is UiState.Error -> TODO()
-//                is UiState.Idle -> TODO()
+                is UiState.Error -> {
+                    Toast.makeText(context, uiState.errorMessage, Toast.LENGTH_SHORT).show()
+                }
                 else -> {
 
                 }
@@ -217,7 +232,7 @@ fun ScannerScreen(
                         }
                     }
                 ) {
-                    Text("ANALYZE")
+                    Text("ANALISIS")
                 }
 
                 Button(
@@ -225,7 +240,13 @@ fun ScannerScreen(
                         .height(60.dp)
                         .fillMaxWidth(),
                     onClick = {
+                        imageUri = null
 
+                        galeryLauncher.launch("image/*")
+
+                        if (imageUri != null) {
+                            viewModel.predict(imageUri!!.toFile())
+                        }
                     }
                 ) {
                     Text("GALERI")

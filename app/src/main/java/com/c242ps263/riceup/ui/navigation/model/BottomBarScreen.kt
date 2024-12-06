@@ -18,6 +18,7 @@ sealed class BottomBarScreen() {
     )
 
     data object Camera: BottomBar(
+        title = "SCAN",
         route = "camera",
         titleResId = R.string.camera,
         icon = R.drawable.camera,
@@ -25,6 +26,7 @@ sealed class BottomBarScreen() {
     )
 
     data object History: BottomBar(
+        title = "RIWAYAT",
         route = "history",
         titleResId = R.string.history,
         icon = R.drawable.history,

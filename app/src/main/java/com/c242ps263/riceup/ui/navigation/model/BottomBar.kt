@@ -5,6 +5,7 @@ import androidx.annotation.StringRes
 
 
 sealed class BottomBar(
+    val title: String? = null,
     val route: String,
     @StringRes val titleResId: Int,
     @DrawableRes val icon: Int,
