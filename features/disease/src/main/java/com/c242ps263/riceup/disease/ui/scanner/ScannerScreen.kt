@@ -1,7 +1,6 @@
 package com.c242ps263.riceup.disease.ui.scanner
 
 import android.Manifest
-import android.R
 import android.widget.Toast
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageCapture
@@ -187,7 +186,7 @@ fun ScannerScreen(
                         Icon(
                             modifier = Modifier
                                 .size(80.dp, 80.dp),
-                            painter = painterResource(id = R.drawable.ic_menu_camera),
+                            painter = painterResource(id = android.R.drawable.ic_menu_camera),
                             contentDescription = "QR Scan",
                             tint = MaterialTheme.colorScheme.background
                         )

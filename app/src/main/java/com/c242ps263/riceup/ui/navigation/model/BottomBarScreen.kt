@@ -30,11 +30,4 @@ sealed class BottomBarScreen() {
         icon = R.drawable.history,
         iconFocused = R.drawable.history
     )
-
-    data object Profile: BottomBar(
-        route = "profile",
-        titleResId = R.string.profile,
-        icon = R.drawable.profile,
-        iconFocused = R.drawable.profile
-    )
 }

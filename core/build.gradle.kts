@@ -46,8 +46,6 @@ android {
     }
 }
 
-extra.set("API_URL", "https://riceup-backend-380963941738.us-central1.run.app")
-
 dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
@@ -61,6 +59,8 @@ dependencies {
     implementation(libs.converter.gson)
     implementation(libs.hilt.android)
     implementation(libs.kotlinx.serialization.json)
+    implementation(libs.firebase.firestore)
+    implementation(libs.guava)
     kapt(libs.hilt.compiler)
     implementation(libs.logging.interceptor)
     testImplementation(libs.junit)

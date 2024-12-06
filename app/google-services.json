@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "380963941738",
+    "project_id": "riceup-441906",
+    "storage_bucket": "riceup-441906.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:380963941738:android:e66e91d811d309790f0913",
+        "android_client_info": {
+          "package_name": "com.c242ps263.riceup"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "380963941738-18qp5418j9jmpn0ie61phc7kh4o3lum2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC2fFX9Oqifrbgj2xHs4EXhZEliYnk4aNo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "380963941738-18qp5418j9jmpn0ie61phc7kh4o3lum2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

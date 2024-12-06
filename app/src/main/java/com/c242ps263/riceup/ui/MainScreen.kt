@@ -4,12 +4,15 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -21,10 +24,10 @@ import com.c242ps263.core.theme.RiceUpTheme
 import com.c242ps263.riceup.data.model.Advice
 import com.c242ps263.riceup.disease.data.model.DetectionDisease
 import com.c242ps263.riceup.disease.ui.detection.DetectionScreen
+import com.c242ps263.riceup.disease.ui.home.HomeScreen
+import com.c242ps263.riceup.disease.ui.scanner.ScannerScreen
 import com.c242ps263.riceup.ui.advice.AdviceScreen
-import com.c242ps263.riceup.ui.camera.CameraScreen
 import com.c242ps263.riceup.ui.history.HistoryScreen
-import com.c242ps263.riceup.ui.home.HomeScreen
 import com.c242ps263.riceup.ui.navigation.BottomBar
 import com.c242ps263.riceup.ui.navigation.model.BottomBarScreen
 import com.c242ps263.riceup.ui.prediction.PredictionScreen
@@ -43,7 +46,6 @@ fun MainScreen(
         BottomBarScreen.Prediction,
         BottomBarScreen.Camera,
         BottomBarScreen.History,
-        BottomBarScreen.Profile
     )
 
     Scaffold(
@@ -56,7 +58,11 @@ fun MainScreen(
                     titleContentColor = MaterialTheme.colorScheme.background,
                 ),
                 title = {
-                    Text("RICE UP")
+                    Text("RICE UP",
+                        style = MaterialTheme.typography.titleLarge.copy(
+                            fontWeight = FontWeight.Bold
+                        )
+                    )
                 }
             )
         },
@@ -64,7 +70,6 @@ fun MainScreen(
             // show and hide bottom navigation
             if (navigationItemList.map { it.route }.contains(currentDestination?.route)) {
                 BottomBar(
-                    modifier = modifier,
                     navController = navController,
                     navigationItemContentList = navigationItemList,
                     currentDestination = currentDestination
@@ -88,7 +93,7 @@ fun MainScreen(
                 )
             }
             composable(BottomBarScreen.Camera.route) {
-                CameraScreen(
+                ScannerScreen(
                     navigateToPredictionResult = {
                         navController.navigate(it)
                     }
@@ -112,21 +117,16 @@ fun MainScreen(
 
                 )
             }
-            composable(BottomBarScreen.Profile.route) {
-                ProfileScreen(
-
-                )
-            }
         }
     }
 }
 
 @Preview(showBackground = true)
 @Composable
-fun DefaultPreview() {
+fun MainScreenPreview() {
     RiceUpTheme {
-        MainScreen(
-
-        )
+        Surface {
+            MainScreen()
+        }
     }
 }
