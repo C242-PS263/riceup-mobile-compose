@@ -63,7 +63,7 @@ fun BottomNavItem(
 ) {
     val selected = currentDestination?.hierarchy?.any { it.route == screen.route } == true
     val background = if (selected) MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.1f) else Color.Transparent
-    val contentColor = if (selected) MaterialTheme.colorScheme.background else MaterialTheme.colorScheme.background.copy(alpha = 0.4f)
+    val contentColor = if (selected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.primary.copy(alpha = 0.4f)
 
     Box(
         modifier = Modifier

@@ -15,7 +15,6 @@ converterGson = "2.11.0"
 uiGraphicsAndroid = "1.7.5"
 foundationAndroid = "1.7.5"
 hiltAndroid = "2.52"
-navigationCompose = "2.9.0-alpha03"
 navigationComposeVersion = "2.8.4"
 hiltNavigationCompose = "1.2.0"
 loggingInterceptor = "5.0.0-alpha.14"
@@ -23,6 +22,15 @@ accompanistPermissions = "0.36.0"
 cameraCompose = "1.5.0-alpha03"
 cameraView = "1.5.0-alpha03"
 cameraLifecycle = "1.5.0-alpha03"
+hiltAndroidVersion = "2.53"
+hiltAndroidCompiler = "2.53"
+hiltAndroidGradlePlugin = "2.53"
+hiltCompiler = "2.53"
+kspVersion = "2.1.0-1.0.29"
+cameraCamera2 = "1.5.0-alpha03"
+kotlinxSerialization = "2.1.0"
+kotlinxSerializationJson = "1.7.3"
+composeMarkdown = "0.5.4"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -45,8 +53,6 @@ retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = 
 converter-gson = { group = "com.squareup.retrofit2", name = "converter-gson", version.ref = "converterGson" }
 androidx-ui-graphics-android = { group = "androidx.compose.ui", name = "ui-graphics-android", version.ref = "uiGraphicsAndroid" }
 androidx-foundation-android = { group = "androidx.compose.foundation", name = "foundation-android", version.ref = "foundationAndroid" }
-hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hiltAndroid" }
-androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigationCompose" }
 navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigationComposeVersion" }
 androidx-hilt-navigation-compose = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "hiltNavigationCompose" }
 logging-interceptor = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "loggingInterceptor" }
@@ -54,10 +60,19 @@ accompanist-permissions = { group = "com.google.accompanist", name = "accompanis
 androidx-camera-compose = { group = "androidx.camera", name = "camera-compose", version.ref = "cameraCompose" }
 androidx-camera-view = { group = "androidx.camera", name = "camera-view", version.ref = "cameraView" }
 androidx-camera-lifecycle = { group = "androidx.camera", name = "camera-lifecycle", version.ref = "cameraLifecycle" }
+hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hiltAndroid" }
+hilt-android-compiler = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "hiltAndroidCompiler" }
+hilt-android-gradle-plugin = { group = "com.google.dagger", name = "hilt-android-gradle-plugin", version.ref = "hiltAndroidGradlePlugin" }
+hilt-compiler = { group = "com.google.dagger", name = "hilt-compiler", version.ref = "hiltCompiler" }
+androidx-camera-camera2 = { group = "androidx.camera", name = "camera-camera2", version.ref = "cameraCamera2" }
+kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
+compose-markdown = { group = "com.github.jeziellago", name = "compose-markdown", version.ref = "composeMarkdown" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 android-library = { id = "com.android.library", version.ref = "agp" }
-
+kotlin-android-ksp = { id = "com.google.devtools.ksp", version.ref = "kspVersion" }
+hilt-android = { id = "com.google.dagger.hilt.android", version.ref = "hiltAndroidVersion" }
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlinxSerialization" }

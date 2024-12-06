@@ -2,6 +2,10 @@ plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.kotlin.android.ksp)
+    alias(libs.plugins.hilt.android)
+    kotlin("kapt")
+    kotlin("plugin.serialization")
 }
 
 android {
@@ -48,6 +52,10 @@ dependencies {
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
     implementation(libs.androidx.hilt.navigation.compose)
+    implementation(libs.hilt.android)
+    implementation(libs.androidx.camera.camera2)
+    implementation(libs.kotlinx.serialization.json)
+    kapt(libs.hilt.compiler)
     implementation(project(":core"))
     implementation(libs.accompanist.permissions)
     implementation(libs.androidx.camera.compose)

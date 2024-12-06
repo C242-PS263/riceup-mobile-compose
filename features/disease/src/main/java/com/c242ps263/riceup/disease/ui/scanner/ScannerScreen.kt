@@ -1,8 +1,10 @@
-package com.c242ps263.riceup.disease.scanner
+package com.c242ps263.riceup.disease.ui.scanner
 
+import android.Manifest
+import android.R
 import android.widget.Toast
 import androidx.camera.core.CameraSelector
-import androidx.camera.lifecycle.ProcessCameraProvider
+import androidx.camera.core.ImageCapture
 import androidx.camera.view.PreviewView
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
@@ -16,13 +18,16 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -35,31 +40,35 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
+import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
 import androidx.core.content.ContextCompat
+import androidx.core.net.toFile
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.LocalLifecycleOwner
+import com.c242ps263.core.data.UiState
 import com.c242ps263.core.theme.RiceUpTheme
-import com.c242ps263.riceup.disease.domain.usecase.disease.PredictDiseaseUseCase
+import com.c242ps263.riceup.disease.data.model.DetectionDisease
+import com.c242ps263.riceup.disease.data.model.DetectionResponse
+import com.c242ps263.riceup.disease.data.model.mapper.DiseaseMapper
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
 import com.google.accompanist.permissions.shouldShowRationale
-import kotlin.coroutines.resume
-import kotlin.coroutines.suspendCoroutine
 
 @OptIn(ExperimentalPermissionsApi::class, ExperimentalFoundationApi::class)
 @Composable
 fun ScannerScreen(
     viewModel: ScannerViewModel = hiltViewModel(),
-    isPreview: Boolean = LocalInspectionMode.current
+    isPreview: Boolean = LocalInspectionMode.current,
+    navigateToPredictionResult: (DetectionDisease) -> Unit = {}
 ) {
-    val lensFacing = CameraSelector.LENS_FACING_BACK
     val context = LocalContext.current
     val lifecycleOwner = LocalLifecycleOwner.current
     val permissionState = if(isPreview) {
         null
     } else {
-        rememberPermissionState(android.Manifest.permission.CAMERA)
+        rememberPermissionState(Manifest.permission.CAMERA)
     }
 
     LaunchedEffect(true) {
@@ -68,32 +77,70 @@ fun ScannerScreen(
         }
     }
 
-    val preview = androidx.camera.core.Preview.Builder().build()
-    val previewView = remember {
-        PreviewView(context)
-    }
-    val cameraxSelector = CameraSelector.Builder().requireLensFacing(lensFacing).build()
-    LaunchedEffect(lensFacing) {
-        val cameraProvider = suspendCoroutine { continuation ->
-            ProcessCameraProvider.getInstance(context).also { cameraProvider ->
-                cameraProvider.addListener({
-                    continuation.resume(cameraProvider.get())
-                }, ContextCompat.getMainExecutor(context))
+    Box (
+        modifier = Modifier
+            .background(Color.White)
+            .fillMaxSize(),
+    ) {
+        viewModel.uiStatePrediction.collectAsState(initial = UiState.Idle).value.let { uiState ->
+            when (uiState) {
+                is UiState.Success -> {
+                    navigateToPredictionResult(DiseaseMapper.mapFromResponseToModel(uiState.data))
+
+                    viewModel.uiStatePrediction.value = UiState.Idle
+                }
+
+                is UiState.Loading -> {
+                    Dialog(
+                        onDismissRequest = { },
+                        DialogProperties(dismissOnBackPress = false, dismissOnClickOutside = false)
+                    ) {
+                        Box(
+                            contentAlignment= Alignment.Center,
+                            modifier = Modifier
+                                .size(100.dp)
+                                .background(Color.White, shape = RoundedCornerShape(8.dp))
+                        ) {
+                            CircularProgressIndicator()
+                        }
+                    }
+                }
+//                is UiState.Error -> TODO()
+//                is UiState.Idle -> TODO()
+                else -> {
+
+                }
             }
         }
-        cameraProvider.unbindAll()
-        cameraProvider.bindToLifecycle(lifecycleOwner, cameraxSelector, preview)
-        preview.surfaceProvider = previewView.surfaceProvider
-    }
 
-    Scaffold {
-        Column(
-            modifier = Modifier
-                .padding(it)
-        ) {
+        Column {
             if ((isPreview || permissionState?.status?.isGranted == true) && viewModel.showScan) {
                 AndroidView(
                     factory = {
+                        val previewView = PreviewView(it)
+                        viewModel.cameraProviderFuture.addListener({
+                            viewModel.imageCapture = ImageCapture.Builder()
+                                .setTargetRotation(previewView.display.rotation)
+                                .build()
+
+                            val cameraSelector = CameraSelector.Builder()
+                                .requireLensFacing(CameraSelector.LENS_FACING_BACK)
+                                .build()
+
+                            viewModel.cameraProvider.unbindAll()
+                            viewModel.cameraProvider.bindToLifecycle(
+                                lifecycleOwner,
+                                cameraSelector,
+                                viewModel.imageCapture,
+                                viewModel.preview
+                            )
+                        }, ContextCompat.getMainExecutor(context))
+                        viewModel.preview = androidx.camera.core.Preview.Builder()
+                            .build()
+                            .apply {
+                                surfaceProvider = previewView.surfaceProvider
+                            }
+
                         previewView
                     },
                     modifier = Modifier
@@ -104,7 +151,7 @@ fun ScannerScreen(
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(550.dp)
+                        .weight(1.0f)
                         .background(color = Color.Black)
                         .combinedClickable(
                             onClick = {
@@ -140,7 +187,7 @@ fun ScannerScreen(
                         Icon(
                             modifier = Modifier
                                 .size(80.dp, 80.dp),
-                            painter = painterResource(id = android.R.drawable.ic_menu_camera),
+                            painter = painterResource(id = R.drawable.ic_menu_camera),
                             contentDescription = "QR Scan",
                             tint = MaterialTheme.colorScheme.background
                         )
@@ -166,7 +213,9 @@ fun ScannerScreen(
                         .height(60.dp)
                         .fillMaxWidth(),
                     onClick = {
-
+                        viewModel.captureImageFromCamera(context) {
+                            viewModel.predict(it.toFile())
+                        }
                     }
                 ) {
                     Text("ANALYZE")
@@ -190,9 +239,14 @@ fun ScannerScreen(
 @Preview(showBackground = true)
 @Composable
 fun ScannerPreview() {
+    val context = LocalContext.current
+
     RiceUpTheme {
         ScannerScreen(
-            viewModel = ScannerViewModel(null)
+            viewModel = ScannerViewModel(
+                context,
+                null
+            )
         )
     }
 }

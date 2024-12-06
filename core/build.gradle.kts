@@ -2,7 +2,12 @@ plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.kotlin.android.ksp)
+    alias(libs.plugins.hilt.android)
+    kotlin("kapt")
+    kotlin("plugin.serialization")
 }
+val backendApiUrl by extra("https://riceup-backend-380963941738.us-central1.run.app")
 
 android {
     namespace = "com.c242ps263.core"
@@ -13,6 +18,8 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
+
+        buildConfigField("String", "BACKEND_API_URL", "\"$backendApiUrl\"")
     }
 
     buildFeatures {
@@ -53,6 +60,8 @@ dependencies {
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
     implementation(libs.hilt.android)
+    implementation(libs.kotlinx.serialization.json)
+    kapt(libs.hilt.compiler)
     implementation(libs.logging.interceptor)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

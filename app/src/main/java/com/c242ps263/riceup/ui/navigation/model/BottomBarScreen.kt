@@ -10,9 +10,9 @@ sealed class BottomBarScreen() {
         iconFocused = R.drawable.home
     )
 
-    data object Calendar: BottomBar(
-        route = "calendar",
-        titleResId = R.string.calendar,
+    data object Prediction: BottomBar(
+        route = "prediction",
+        titleResId = R.string.prediction,
         icon = R.drawable.calendar,
         iconFocused = R.drawable.calendar
     )
