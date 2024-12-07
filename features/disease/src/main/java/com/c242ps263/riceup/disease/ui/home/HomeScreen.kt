@@ -129,7 +129,7 @@ fun HomeScreen(
 
             Spacer(Modifier.height(20.dp))
 
-            viewModel.uiStateGetDisease.collectAsState(initial = UiState.Idle).value.let { uiState ->
+            viewModel.uiStateGetDisease.collectAsState().value.let { uiState ->
                 when (uiState) {
                     is UiState.Idle -> {
                         viewModel.getDiseases()

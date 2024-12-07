@@ -101,8 +101,13 @@ fun HistoryItem(detectionDisease: DetectionDiseaseEntity) {
                 modifier = Modifier
                     .padding(horizontal = 20.dp)
             ) {
-                Text(detectionDisease.prediction,
+                Text(detectionDisease.informationName,
                     style = MaterialTheme.typography.titleMedium.copy(
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                )
+                Text(detectionDisease.informationHeadline,
+                    style = MaterialTheme.typography.bodyMedium.copy(
                         color = MaterialTheme.colorScheme.primary
                     )
                 )

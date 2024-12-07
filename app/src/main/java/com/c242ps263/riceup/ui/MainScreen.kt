@@ -1,7 +1,16 @@
 package com.c242ps263.riceup.ui
 
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.systemBars
+import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
@@ -9,8 +18,11 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -30,6 +42,7 @@ import com.c242ps263.riceup.disease.ui.home.HomeScreen
 import com.c242ps263.riceup.disease.ui.scanner.ScannerScreen
 import com.c242ps263.riceup.ui.advice.AdviceScreen
 import com.c242ps263.riceup.ui.navigation.BottomBar
+import com.c242ps263.riceup.ui.navigation.model.BottomBar
 import com.c242ps263.riceup.ui.navigation.model.BottomBarScreen
 import com.c242ps263.riceup.ui.prediction.PredictionScreen
 import com.c242ps263.riceup.ui.profile.ProfileScreen
@@ -45,19 +58,37 @@ fun MainScreen(
     val navigationItemList = arrayOf(
         BottomBarScreen.Home,
         BottomBarScreen.Prediction,
-        BottomBarScreen.Camera,
-        BottomBarScreen.History,
+        BottomBarScreen.Detection,
+        BottomBarScreen.Profile,
+    )
+    val unavigationItemList = arrayOf(
+        BottomBarScreen.History
     )
     val allNavTitle =
-        navigationItemList.map { it.route to it.title } + arrayOf(
-            DetectionDisease::class.toString() to "HASIL"
+        (navigationItemList + unavigationItemList).map { it.route to it.title } + arrayOf(
+            DetectionDisease::class.java.toString() to "HASIL"
         )
+    val isBackButtonVisible by remember {
+        derivedStateOf {
+            navController.previousBackStackEntry != null
+        }
+    }
 
     Scaffold(
         modifier = modifier,
         containerColor = MaterialTheme.colorScheme.background,
         topBar = {
             TopAppBar(
+                navigationIcon = {
+                    if (isBackButtonVisible) {
+                        IconButton(onClick = { navController.navigateUp() }) {
+                            Icon(
+                                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                                contentDescription = "Back"
+                            )
+                        }
+                    }
+                },
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = MaterialTheme.colorScheme.primary,
                     titleContentColor = MaterialTheme.colorScheme.background,
@@ -70,6 +101,25 @@ fun MainScreen(
                             fontWeight = FontWeight.Bold
                         )
                     )
+                },
+                actions = {
+                    when (currentDestination?.route) {
+                        BottomBarScreen.Detection.route -> {
+                            BottomBarScreen.History.run {
+                                IconButton(
+                                    onClick = {
+                                        navController.navigate(route)
+                                    }
+                                ) {
+                                    Icon(
+                                        painter = painterResource(id = icon),
+                                        contentDescription = title,
+                                        tint = MaterialTheme.colorScheme.background
+                                    )
+                                }
+                            }
+                        }
+                    }
                 }
             )
         },
@@ -87,19 +137,16 @@ fun MainScreen(
         NavHost(
             navController = navController,
             startDestination = BottomBarScreen.Home.route,
-            modifier = Modifier.padding(it)
+            modifier = Modifier
+                .padding(it)
         ) {
             composable(BottomBarScreen.Home.route) {
-                HomeScreen(
-
-                )
+                HomeScreen()
             }
             composable(BottomBarScreen.Prediction.route) {
-                PredictionScreen(
-
-                )
+                PredictionScreen()
             }
-            composable(BottomBarScreen.Camera.route) {
+            composable(BottomBarScreen.Detection.route) {
                 ScannerScreen(
                     navigateToPredictionResult = {
                         navController.navigate(it)
@@ -123,9 +170,10 @@ fun MainScreen(
                 )
             }
             composable(BottomBarScreen.History.route) {
-                HistoryScreen(
-
-                )
+                HistoryScreen()
+            }
+            composable(BottomBarScreen.Profile.route) {
+                ProfileScreen()
             }
         }
     }
@@ -135,8 +183,6 @@ fun MainScreen(
 @Composable
 fun MainScreenPreview() {
     RiceUpTheme {
-        Surface {
-            MainScreen()
-        }
+        MainScreen()
     }
 }

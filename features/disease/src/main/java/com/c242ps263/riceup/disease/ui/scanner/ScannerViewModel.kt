@@ -27,6 +27,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import java.io.File
 import javax.inject.Inject
@@ -74,6 +75,16 @@ class ScannerViewModel @Inject constructor(
         )
     }
 
+    fun predict(context: Context, uri: Uri, dispatcher: CoroutineDispatcher = Dispatchers.Default) {
+        val file = File(context.filesDir, "${System.currentTimeMillis()}.jpg")
+        context.contentResolver.openInputStream(uri)?.let {
+            file.outputStream().use { output ->
+                it.copyTo(output)
+            }
+            predict(file)
+        }
+    }
+
     fun predict(file: File, dispatcher: CoroutineDispatcher = Dispatchers.Default) {
         uiStatePrediction.value = UiState.Loading
 
@@ -81,8 +92,7 @@ class ScannerViewModel @Inject constructor(
             try {
                 val result = predictDiseaseUseCase?.execute(
                     MultipartBody.Part
-                        .createFormData(
-                            "file",
+                        .createFormData("file",
                             file.name,
                             file.asRequestBody()
                         )

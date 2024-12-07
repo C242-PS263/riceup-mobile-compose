@@ -60,8 +60,16 @@ import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
 import com.google.accompanist.permissions.shouldShowRationale
+import okhttp3.ExperimentalOkHttpApi
+import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
+import java.io.File
+import kotlin.io.path.name
+import kotlin.io.path.outputStream
 
-@OptIn(ExperimentalPermissionsApi::class, ExperimentalFoundationApi::class)
+@OptIn(ExperimentalPermissionsApi::class, ExperimentalFoundationApi::class,
+    ExperimentalOkHttpApi::class
+)
 @Composable
 fun ScannerScreen(
     viewModel: ScannerViewModel = hiltViewModel(),
@@ -75,13 +83,12 @@ fun ScannerScreen(
     } else {
         rememberPermissionState(Manifest.permission.CAMERA)
     }
-    var imageUri by remember {
-        mutableStateOf<Uri?>(null)
-    }
     val galeryLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.GetContent()
+        contract = ActivityResultContracts.GetContent(),
     ) { uri ->
-        imageUri = uri
+        uri?.let {
+            viewModel.predict(context, uri)
+        }
     }
 
     LaunchedEffect(true) {
@@ -240,13 +247,7 @@ fun ScannerScreen(
                         .height(60.dp)
                         .fillMaxWidth(),
                     onClick = {
-                        imageUri = null
-
                         galeryLauncher.launch("image/*")
-
-                        if (imageUri != null) {
-                            viewModel.predict(imageUri!!.toFile())
-                        }
                     }
                 ) {
                     Text("GALERI")

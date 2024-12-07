@@ -14,7 +14,13 @@ data class DetectionResponse(
     var file: String
 ) {
     data class Information(
+        @SerializedName("name")
+        val name: String,
         @SerializedName("description")
-        val description: String
+        val description: String,
+        @SerializedName("image")
+        val image: String,
+        @SerializedName("headline")
+        val headline: String
     )
 }

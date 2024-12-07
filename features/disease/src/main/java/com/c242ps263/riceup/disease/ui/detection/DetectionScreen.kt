@@ -11,13 +11,13 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Save
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.IconButtonColors
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -30,11 +30,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalInspectionMode
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -43,8 +41,6 @@ import coil3.request.ImageRequest
 import com.c242ps263.core.data.UiState
 import com.c242ps263.core.theme.RiceUpTheme
 import com.c242ps263.riceup.disease.data.model.DetectionDisease
-import com.c242ps263.riceup.disease.data.model.DetectionResponse
-import com.c242ps263.riceup.disease.data.model.mapper.DiseaseMapper
 import java.io.File
 
 @Composable
@@ -132,9 +128,9 @@ fun DetectionScreen(
                     }
                 ) {
                     Icon(
-                        painter = painterResource(android.R.drawable.ic_menu_save),
+                        imageVector = Icons.Filled.Save,
                         contentDescription = "Save",
-                        tint = MaterialTheme.colorScheme.background
+                        tint = MaterialTheme.colorScheme.onPrimary
                     )
                 }
             }
@@ -192,6 +188,9 @@ fun DetectionPreview() {
                 prediction = "Prediction",
                 advice = "lorem",
                 informationDescription = "Description",
+                informationName = "Name",
+                informationImage = "",
+                informationHeadline = "Headline"
             ),
         )
     }

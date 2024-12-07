@@ -16,6 +16,9 @@ object DatabaseModule {
     @Provides
     @Singleton
     fun provideDiseaseDatabase(@ApplicationContext context: Context): DiseaseDatabase {
-        return Room.databaseBuilder(context, DiseaseDatabase::class.java, "disease.db").build()
+        return Room
+            .databaseBuilder(context, DiseaseDatabase::class.java, "disease.db")
+            .fallbackToDestructiveMigration()
+            .build()
     }
 }

@@ -7,8 +7,8 @@ import com.c242ps263.riceup.disease.data.datasource.local.db.entity.DetectionDis
 
 @Database(
     entities = [DetectionDiseaseEntity::class],
-    version = 1,
-    exportSchema = false
+    version = 2,
+    exportSchema = false,
 )
 abstract class DiseaseDatabase: RoomDatabase() {
     abstract fun detectionDiseaseDao(): DetectionDiseaseDao

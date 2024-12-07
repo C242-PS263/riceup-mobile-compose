@@ -14,7 +14,15 @@
       },
       "oauth_client": [
         {
-          "client_id": "380963941738-18qp5418j9jmpn0ie61phc7kh4o3lum2.apps.googleusercontent.com",
+          "client_id": "380963941738-feb1s55araif65frtsife8vmen0cmvj9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.c242ps263.riceup",
+            "certificate_hash": "f13ab76275be941a2eac0217e52bc18955879a15"
+          }
+        },
+        {
+          "client_id": "380963941738-6a3ajh2rem2jtfu1pkkgg31g7eb3k5ov.apps.googleusercontent.com",
           "client_type": 3
         }
       ],

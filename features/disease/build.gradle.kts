@@ -62,6 +62,7 @@ dependencies {
     implementation(libs.coil.network.okhttp)
     implementation(libs.coil.compose)
     implementation(libs.androidx.room.ktx)
+    implementation(libs.androidx.material.icons.extended)
     ksp(libs.androidx.room.compiler)
     kapt(libs.hilt.compiler)
     implementation(project(":core"))

@@ -5,6 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
@@ -13,7 +14,7 @@ import com.c242ps263.riceup.ui.splash.SplashScreen
 
 @Composable
 fun MainApp() {
-    var showSplashScreen by remember {
+    var showSplashScreen by rememberSaveable {
         mutableStateOf(true)
     }
 

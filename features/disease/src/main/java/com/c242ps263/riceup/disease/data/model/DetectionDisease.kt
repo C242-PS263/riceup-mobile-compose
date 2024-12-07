@@ -10,5 +10,8 @@ data class DetectionDisease(
 
     var file: String? = null,
 
-    val informationDescription: String
+    val informationDescription: String,
+    val informationName: String,
+    val informationImage: String,
+    val informationHeadline: String
 )

@@ -11,7 +11,10 @@ object DiseaseMapper {
             prediction = response.prediction,
             advice = response.advice,
             file = response.file,
-            informationDescription = response.information.description
+            informationDescription = response.information.description,
+            informationName = response.information.name,
+            informationImage = response.information.image,
+            informationHeadline = response.information.headline
         )
     }
 
@@ -20,8 +23,11 @@ object DiseaseMapper {
             prediction = detectionDisease.prediction,
             advice = detectionDisease.advice,
             file = detectionDisease.file,
+            id = id,
             informationDescription = detectionDisease.informationDescription,
-            id = id
+            informationName = detectionDisease.informationName,
+            informationImage = detectionDisease.informationImage,
+            informationHeadline = detectionDisease.informationHeadline
         )
     }
 }
