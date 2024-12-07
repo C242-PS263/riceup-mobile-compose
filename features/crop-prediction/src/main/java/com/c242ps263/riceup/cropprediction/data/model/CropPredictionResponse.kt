@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class CropPrediction(
+data class CropPredictionResponse(
     @SerializedName("land_area")
     val landArea: Int,
     @SerializedName("rainfall")
