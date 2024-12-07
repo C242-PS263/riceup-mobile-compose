@@ -1,7 +1,7 @@
 package com.c242ps263.riceup.cropprediction.domain.repository
 
 import com.c242ps263.riceup.cropprediction.data.model.CropPrediction
-import com.c242ps263.riceup.disease.data.model.DetectionResponse
+import com.c242ps263.riceup.cropprediction.data.model.CropPredictionResponse
 import okhttp3.MultipartBody
 
 interface CropPredictionRepository {
